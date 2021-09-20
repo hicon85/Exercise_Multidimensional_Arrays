@@ -8,76 +8,45 @@ namespace _03.Maximal_Sum
     {
         static void Main(string[] args)
         {
-            int[] dimensions = Console.ReadLine()
-                 .Split(" ")
-                 .Select(int.Parse)
-                 .ToArray();
-
+            int[] dimensions = Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
             int rows = dimensions[0];
             int cols = dimensions[1];
+            int[][] matrix = new int[rows][];
 
-            int[,] matrix = GoodJob(rows, cols);
-
-            int bestSum = 0;
-            int bestRowIndex = 0;
-            int bestColIndex = 0;
-
-
-            for (int row = 0; row < rows - 2; row++)
+            for (int row = 0; row < matrix.Length; row++)
             {
-                for (int col = 0; col < cols - 2; col++)
+                matrix[row] = Console.ReadLine().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+            }
+
+            int maxSum = 0;
+            int rowStartIndex = 0;
+            int colStartIndex = 0;
+            for (int row = 0; row < matrix.Length - 2; row++)
+            {
+                for (int col = 0; col < matrix[row].Length - 2; col++)
                 {
-                    int firstRowSum = matrix[row, col] + matrix[row, col + 1]
-                        + matrix[row, col + 2];
+                    int sum = matrix[row][col] + matrix[row][col + 1] + matrix[row][col + 2]
+                              + matrix[row + 1][col] + matrix[row + 1][col + 1] + matrix[row + 1][col + 2]
+                              + matrix[row + 2][col] + matrix[row + 2][col + 1] + matrix[row + 2][col + 2];
 
-                    int secondsRowSum = matrix[row+1, col] + matrix[row+1, col + 1]
-                       + matrix[row + 1, col + 2];
-
-                    int treeRowSum = matrix[row+2, col] + matrix[row+2, col + 1]
-                       + matrix[row+2, col + 2];
-
-                    int currentSum = firstRowSum + secondsRowSum + treeRowSum;
-
-                    if(currentSum > bestSum)
+                    if (sum > maxSum)
                     {
-                        bestSum = currentSum;
-                        bestRowIndex = row;
-                        bestColIndex = col;
-
+                        maxSum = sum;
+                        rowStartIndex = row;
+                        colStartIndex = col;
                     }
                 }
             }
-            Console.WriteLine($"Sum = {bestSum}");
 
-            for (int row = bestRowIndex; row <= bestRowIndex + 2; row++)
+            Console.WriteLine($"Sum = {maxSum}");
+            for (int row = rowStartIndex; row <= rowStartIndex + 2; row++)
             {
-                for (int col = bestColIndex; col <= bestColIndex + 2; col++)
+                for (int col = colStartIndex; col <= colStartIndex + 2; col++)
                 {
-                    Console.Write(matrix[row,col] + " ");
+                    Console.Write($"{matrix[row][col]} ");
                 }
                 Console.WriteLine();
             }
         }
-        static int[,] GoodJob(int rows, int cols)
-        {
-            int[,] matrix = new int[rows, cols];
-
-            for (int row = 0; row < rows; row++)
-            {
-                int[] array = Console.ReadLine()
-                    .Split(" ")
-                    .Select(int
-                    .Parse)
-                    .ToArray();
-
-                for (int col = 0; col < cols; col++)
-                {
-                    matrix[row, col] = array[col];
-                }
-            }
-            return matrix;
-
-        }
-
     }
 }
