@@ -8,49 +8,40 @@ namespace _02._2X2_Squares_in_Matrix
     {
         static void Main(string[] args)
         {
-            int[] dimensions = Console.ReadLine()
+            int[] dimension = Console.ReadLine()
                  .Split()
                  .Select(int.Parse)
                  .ToArray();
 
-            int rows = dimensions[0];
-            int cols = dimensions[1];
+            char[,] matrix = new char[dimension[0], dimension[1]];
 
-            char[,] matrix = GoodJob(rows, cols);
-            int count = 0;
-
-            for (int row = 0; row <= rows-2; row++)
-            {
-                for (int col = 0; col <= cols-2; col++)
-                {
-                    if(matrix[row,col] == matrix[row,col + 1]
-                        && matrix[row,col] == matrix[row + 1,col] &&
-                            matrix[row,col] == matrix [row + 1, col + 1])
-                    {
-                        count++;
-                    }
-                }
-            }
-            Console.WriteLine(count);
-            
-        }
-        static char[,] GoodJob(int rows, int cols)
-        {
-            char[,] matrix = new char[rows, cols];
-
-            for (int row = 0; row < rows; row++)
+            for (int row = 0; row < matrix.GetLength(0); row++)
             {
                 char[] array = Console.ReadLine()
                     .Split()
                     .Select(char.Parse)
                     .ToArray();
 
-                for (int col = 0; col < cols; col++)
+                for (int col = 0; col < matrix.GetLength(1); col++)
                 {
                     matrix[row, col] = array[col];
                 }
             }
-            return matrix;
+
+            int square2x2 = 0;
+
+            for (int row = 0; row < matrix.GetLength(0) -1; row++)
+            {
+                for (int col = 0; col < matrix.GetLength(1) -1; col++)
+                {
+                    if(matrix[row,col] == matrix[row,col +1]
+                        && matrix[row,col] == matrix[row+1,col+1]&& matrix[row,col] == matrix[row + 1, col])
+                    {
+                        square2x2++;
+                    }
+                }
+            }
+            Console.WriteLine(square2x2);
         }
     }
 }
